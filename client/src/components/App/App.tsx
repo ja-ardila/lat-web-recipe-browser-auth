@@ -4,6 +4,10 @@ import { Routes, Route } from "react-router-dom";
 import type { Recipe } from "../../types";
 import { getRecipes } from "../../utils/api";
 import AppLayout from "../AppLayout/AppLayout";
+import {
+  ProtectedRoute,
+  PublicRoute,
+} from "../ProtectedRoute/ProtectedRoute";
 import HomePage from "../../pages/HomePage";
 import FavoritesPage from "../../pages/FavoritesPage";
 import LoginPage from "../../pages/LoginPage";
@@ -39,14 +43,23 @@ function App() {
   return (
     <Routes>
       <Route element={<AppLayout />}>
-        <Route path="/" element={homeContent()} />
-        <Route
-          path="/favorites"
-          element={<FavoritesPage recipes={recipes} />}
-        />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/recipes/:id" element={<RecipePage recipes={recipes} />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={homeContent()} />
+          <Route
+            path="/favorites"
+            element={<FavoritesPage recipes={recipes} />}
+          />
+          <Route
+            path="/recipes/:id"
+            element={<RecipePage recipes={recipes} />}
+          />
+        </Route>
+
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Route>
+
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

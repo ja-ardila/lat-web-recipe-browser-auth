@@ -2,6 +2,11 @@ export type StringMap = {
   [key: string]: string;
 };
 
+export type CurrentUser = {
+  _id: string;
+  email: string;
+};
+
 export type Recipe = {
   id: string;
   title: string;

@@ -2,17 +2,20 @@ import { useNavigate } from 'react-router';
 
 import type { Recipe } from '../../types';
 import { categoryColors, categoryLabels } from '../../data/recipes';
-import { useFavorites } from '../../contexts/FavoritesContext';
+import { useAuth } from '../../contexts/AuthContext';
 import './RecipeCard.css';
 
 type Props = {
   recipe: Recipe;
+  onToggleFavorite: (id: string) => void;
 };
 
-function RecipeCard({ recipe }: Props) {
+function RecipeCard({ recipe, onToggleFavorite }: Props) {
   const navigate = useNavigate();
-  const { favorites, onToggleFavorite } = useFavorites();
-  const isFavorited = favorites.has(recipe.id);
+  const { currentUser } = useAuth();
+  const isFavorited = currentUser
+    ? recipe.likes.includes(currentUser._id)
+    : false;
 
   return (
     <article className="recipe-card">
